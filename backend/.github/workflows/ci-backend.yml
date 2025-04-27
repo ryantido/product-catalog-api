@@ -38,3 +38,6 @@ jobs:
 
     - name: Run front-end build
       run: npm run build
+    
+    - name: Run PHPUnit tests with coverage
+      run: vendor/bin/phpunit --coverage-clover=backend/coverage.xml
