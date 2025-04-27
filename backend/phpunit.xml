@@ -1,0 +1,10 @@
+<phpunit bootstrap="vendor/autoload.php" colors="true">
+  <testsuites>
+    <testsuite name="backend-tests">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <log type="coverage-clover" target="coverage.xml"/>
+  </logging>
+</phpunit>

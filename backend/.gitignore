@@ -1,0 +1,23 @@
+# Logs
+logs
+*.log
+
+# Dependency directories
+vendor/
+
+# PHPUnit
+coverage.xml
+.phpunit.result.cache
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System files
+Thumbs.db

@@ -1,1 +1,0 @@
-{"version":1,"defects":{"ProductRepositoryTest::testSaveAndFind":4,"ProductRepositoryTest::testDelete":4},"times":{"ProductRepositoryTest::testSaveAndFind":0.002,"ProductRepositoryTest::testDelete":0}}

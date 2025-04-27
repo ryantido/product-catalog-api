@@ -1,0 +1,50 @@
+name: CI Backend
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, intl, xml
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload coverage to SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          sonarToken: ${{ secrets.SONAR_TOKEN }}
+          args: >
+            -Dsonar.projectKey=product-catalog-api
+            -Dsonar.organization=your-organization
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.php.coverage.reportPaths=coverage.xml
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Validate coding standards
+        run: vendor/bin/phpcs --standard=PSR12 src/

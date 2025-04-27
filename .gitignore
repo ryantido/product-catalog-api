@@ -1,3 +1,24 @@
+# Ignorer les dépendances PHP
 /vendor/
+
+# Ignorer les dépendances Node.js
+node_modules/
+
+# Ignorer les fichiers de cache et temporaires
+*.log
+*.cache
+*.tmp
+
+# Ignorer les fichiers spécifiques à l'environnement local
+.env
+.DS_Store
+
+# Ignorer les fichiers générés par PHPUnit
+.phpunit.result.cache
+
+# Ignorer les fichiers de build
+/build/
+/dist/
+
 /coverage.xml
 /.history
