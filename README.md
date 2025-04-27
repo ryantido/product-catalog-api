@@ -63,7 +63,7 @@ vendor/bin/phpunit
 ```
 
 ### Front-end
-Pour exécuter les tests front-end (si configurés) :
+Pour exécuter les tests front-end  :
 ```bash
 npm test
 ```
