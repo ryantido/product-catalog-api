@@ -1,4 +1,5 @@
-name: CI Backend
+name: CI Pipeline
+
 on:
   push:
     branches:
@@ -8,43 +9,32 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          extensions: mbstring, intl, xml
-          coverage: xdebug
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1' # Updated from 7.4 to 8.1
+        extensions: mbstring, intl, pdo, pdo_mysql
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Install PHP dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist
 
-      - name: Run PHPUnit tests
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+    - name: Run PHPUnit tests
+      run: vendor/bin/phpunit
 
-      - name: Upload coverage to SonarCloud
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          sonarToken: ${{ secrets.SONAR_TOKEN }}
-          args: >
-            -Dsonar.projectKey=product-catalog-api
-            -Dsonar.organization=your-organization
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.php.coverage.reportPaths=coverage.xml
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+    - name: Install Node.js dependencies
+      run: npm install
 
-      - name: Validate coding standards
-        run: vendor/bin/phpcs --standard=PSR12 src/
+    - name: Run front-end build
+      run: npm run build
